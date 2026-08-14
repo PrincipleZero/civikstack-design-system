@@ -56,7 +56,7 @@ export function Nav() {
           onDark ? "bg-transparent" : "border-b border-black/10 bg-white/85 backdrop-blur-xl"
         }`}
       >
-        <div className="mx-auto flex max-w-[1500px] items-center justify-between px-6 py-4 md:px-10">
+        <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-6 px-6 py-4 md:px-10">
           <Link href="/" className="shrink-0">
             <span
               className={`rounded-md px-2 py-1 font-mono text-[12px] font-semibold uppercase tracking-[0.1em] ${
@@ -66,6 +66,26 @@ export function Nav() {
               Wayfinder
             </span>
           </Link>
+
+          {/* The main categories live in the bar; Curves, Recipes and Admin
+              stay in the panel. Hidden on small screens — the panel covers those. */}
+          <nav className="hidden flex-wrap gap-x-5 gap-y-1 md:flex">
+            {CATEGORIES.map((c) => (
+              <Link
+                key={c.id}
+                href={`/${c.id}`}
+                aria-current={path === `/${c.id}` ? "page" : undefined}
+                className={`text-[14px] transition ${
+                  onDark
+                    ? path === `/${c.id}` ? "text-white" : "text-white/60 hover:text-white"
+                    : path === `/${c.id}` ? "text-black" : "text-black/60 hover:text-black"
+                }`}
+              >
+                {c.name}
+              </Link>
+            ))}
+          </nav>
+
           <button
             type="button"
             onClick={() => setOpen(true)}
