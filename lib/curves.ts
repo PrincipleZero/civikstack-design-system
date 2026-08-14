@@ -1,3 +1,8 @@
+/**
+ * SEED DATA ONLY. This file populates Payload on first boot of an empty
+ * database and is never read again — editing it changes nothing live.
+ * Edit the catalogue at /admin.
+ */
 export type Curve = {
   /** designer / provenance group, used as the gallery section heading */
   g: string;

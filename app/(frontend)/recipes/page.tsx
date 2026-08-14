@@ -1,8 +1,11 @@
-import { RECIPES, E } from "@/lib/recipes";
+import { getRecipes, getTokens } from "@/lib/cms";
+
+export const dynamic = "force-dynamic";
 import RecipeCard from "@/components/RecipeCard";
 import { PageTitle, Eyebrow } from "@/components/ui";
 
-export default function RecipesPage() {
+export default async function RecipesPage() {
+  const [RECIPES, E] = await Promise.all([getRecipes(), getTokens()]);
   const groups = [...new Set(RECIPES.map((r) => r.grp))];
   const steps = RECIPES.reduce((n, r) => n + r.steps.length, 0);
 
@@ -53,7 +56,7 @@ export default function RecipesPage() {
           <Eyebrow>{g}</Eyebrow>
           <div className="mt-4 grid gap-5 xl:grid-cols-2">
             {RECIPES.filter((r) => r.grp === g).map((r) => (
-              <RecipeCard key={r.name} r={r} />
+              <RecipeCard key={r.name} r={r} tokens={E} />
             ))}
           </div>
         </section>

@@ -1,4 +1,9 @@
 /**
+ * SEED DATA ONLY. This file populates Payload on first boot of an empty
+ * database and is never read again — editing it changes nothing live.
+ * Edit the catalogue at /admin.
+ */
+/**
  * The catalog.
  *
  * Every entry describes something that actually exists on civikstack.org — the

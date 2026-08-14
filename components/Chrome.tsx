@@ -3,25 +3,30 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { CATEGORIES } from "@/lib/registry";
-
-const EXTRA = [
-  { id: "curves", name: "Curves" },
-  { id: "recipes", name: "Recipes" },
-];
+import { AnimatePresence, motion } from "framer-motion";
+import { CATEGORIES } from "@/lib/categories";
 
 /**
- * Nav theming is route-derived here for the same reason it is on the site:
- * the home page opens on black, every catalogue page is light. This is the
- * documented rule in Foundations → Colour, applied to the catalogue itself.
+ * The header is now just a wordmark and a Menu button; navigation lives in a
+ * side panel built from Wayfinder's own catalogued specs: backdrop fades 0.35s,
+ * items rise from y30 on a 0.06s stagger, everything on the signature curve —
+ * the same grammar as the Foundation site's menu (see Motion → Menu overlay).
  */
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+const LINKS = [
+  { id: "curves", name: "Curves" },
+  { id: "recipes", name: "Recipes" },
+  ...CATEGORIES.map((c) => ({ id: c.id as string, name: c.name })),
+];
+
 export function Nav() {
   const path = usePathname();
+  const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // On the home page the header starts transparent over the black hero and
-  // goes solid once light content reaches it. Without this the white wordmark
-  // lands on white — the exact failure Foundations → Colour warns about.
+  // Home starts transparent over the black hero and goes solid when light
+  // content reaches the header — the documented rule in Foundations → Colour.
   useEffect(() => {
     if (path !== "/") return;
     const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.7);
@@ -30,49 +35,125 @@ export function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [path]);
 
+  // Route change closes the panel; Esc closes it; body scroll locks while open.
+  useEffect(() => setOpen(false), [path]);
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   const onDark = path === "/" && !scrolled;
 
   return (
-    <header
-      className={`sticky top-0 z-40 transition-colors ${
-        onDark
-          ? "bg-transparent"
-          : "border-b border-black/10 bg-white/85 backdrop-blur-xl"
-      }`}
-    >
-      <div className="mx-auto flex max-w-[1500px] flex-wrap items-center gap-x-6 gap-y-2 px-6 py-4 md:px-10">
-        <Link href="/" className="mr-2 shrink-0">
-          <span
-            className={`rounded-md px-2 py-1 font-mono text-[12px] font-semibold uppercase tracking-[0.1em] ${
+    <>
+      <header
+        className={`sticky top-0 z-40 transition-colors ${
+          onDark ? "bg-transparent" : "border-b border-black/10 bg-white/85 backdrop-blur-xl"
+        }`}
+      >
+        <div className="mx-auto flex max-w-[1500px] items-center justify-between px-6 py-4 md:px-10">
+          <Link href="/" className="shrink-0">
+            <span
+              className={`rounded-md px-2 py-1 font-mono text-[12px] font-semibold uppercase tracking-[0.1em] ${
+                onDark ? "bg-white text-black" : "bg-black text-white"
+              }`}
+            >
+              Wayfinder
+            </span>
+          </Link>
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            className={`rounded-full px-4 py-2 text-[13px] font-medium transition-transform hover:scale-[1.04] ${
               onDark ? "bg-white text-black" : "bg-black text-white"
             }`}
           >
-            Wayfinder
-          </span>
-        </Link>
-        <nav className="flex flex-wrap gap-x-5 gap-y-1">
-          {[...EXTRA, ...CATEGORIES].map((c) => (
-            <Link
-              key={c.id}
-              href={`/${c.id}`}
-              className={`text-[14px] transition ${
-                onDark ? "text-white/60 hover:text-white" : "text-black/60 hover:text-black"
-              }`}
+            Menu
+          </button>
+        </div>
+      </header>
+
+      <AnimatePresence>
+        {open && (
+          <>
+            {/* scrim — 0.35s fade, the measured backdrop timing */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.35 }}
+              onClick={() => setOpen(false)}
+              className="fixed inset-0 z-50 bg-black/50"
+            />
+            {/* the side panel */}
+            <motion.aside
+              initial={{ x: 60, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: 60, opacity: 0 }}
+              transition={{ duration: 0.35, ease: EASE }}
+              className="fixed inset-y-0 right-0 z-50 flex w-full max-w-[460px] flex-col bg-black text-white"
             >
-              {c.name}
-            </Link>
-          ))}
-        </nav>
-      </div>
-    </header>
+              <div className="flex items-center justify-between px-8 py-5">
+                <span className="rounded-md bg-white px-2 py-1 font-mono text-[12px] font-semibold uppercase tracking-[0.1em] text-black">
+                  Wayfinder
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="rounded-full bg-white px-4 py-2 text-[13px] font-medium text-black transition-transform hover:scale-[1.04]"
+                >
+                  Close
+                </button>
+              </div>
+
+              <nav className="flex flex-1 flex-col justify-center gap-1 overflow-y-auto px-8 py-6">
+                {LINKS.map((l, i) => (
+                  <motion.div
+                    key={l.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.06 * i, ease: EASE }}
+                  >
+                    <Link
+                      href={`/${l.id}`}
+                      aria-current={path === `/${l.id}` ? "page" : undefined}
+                      className={`block text-[32px] font-medium uppercase leading-[1.25] tracking-tight transition-opacity hover:opacity-50 md:text-[40px] ${
+                        path === `/${l.id}` ? "opacity-50" : ""
+                      }`}
+                    >
+                      {l.name}
+                    </Link>
+                  </motion.div>
+                ))}
+              </nav>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4, delay: 0.06 * LINKS.length, ease: EASE }}
+                className="border-t border-white/15 px-8 py-5"
+              >
+                <a href="/admin" className="font-mono text-[12px] uppercase tracking-[0.1em] text-white/50 transition-colors hover:text-white">
+                  Admin — edit the catalogue →
+                </a>
+              </motion.div>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
-/** The home page is full-bleed; catalogue pages get the standard gutter. */
+/** The home page is full-bleed; catalogue pages get the light wrapper. */
 export function Main({ children }: { children: React.ReactNode }) {
   const path = usePathname();
   if (path === "/") return <main>{children}</main>;
-  // The site's rule: a light page declares itself. Nav reads the route to match.
   return (
     <main className="light-page min-h-screen bg-white text-black">
       <div className="mx-auto max-w-[1500px] px-6 pb-28 pt-8 md:px-10">{children}</div>

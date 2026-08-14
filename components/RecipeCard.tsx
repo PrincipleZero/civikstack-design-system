@@ -1,5 +1,6 @@
 import type { Recipe } from "@/lib/recipes";
-import { E } from "@/lib/recipes";
+
+type Tokens = Record<string, [string, number, string, number?]>;
 
 const ROLE: Record<string, string> = {
   structure: "bg-black/[0.06] text-black/70",
@@ -10,7 +11,7 @@ const ROLE: Record<string, string> = {
 };
 
 /** A recipe is a choreography: which element moves, on which curve, at what onset. */
-export default function RecipeCard({ r }: { r: Recipe }) {
+export default function RecipeCard({ r, tokens }: { r: Recipe; tokens: Tokens }) {
   const span = Math.max(...r.steps.map((s) => s.o), 1);
   return (
     <div className="rounded-2xl bg-white p-5 ring-1 ring-black/10">
@@ -32,7 +33,7 @@ export default function RecipeCard({ r }: { r: Recipe }) {
       {/* onset timeline — the shape of the cascade at a glance */}
       <div className="mt-4 space-y-1.5">
         {r.steps.map((s, i) => {
-          const tok = E[s.c];
+          const tok = tokens[s.c];
           const left = (s.o / span) * 72;
           return (
             <div key={i} className="grid grid-cols-[104px_1fr] items-center gap-3">
@@ -67,9 +68,9 @@ export default function RecipeCard({ r }: { r: Recipe }) {
                 <td className="px-3 py-2 font-medium">{s.l}</td>
                 <td className="px-3 py-2">
                   <span className="font-mono text-[11.5px]">{s.c}</span>
-                  {E[s.c] && (
+                  {tokens[s.c] && (
                     <span className="ml-1.5 font-mono text-[10.5px] text-black/40">
-                      {E[s.c][1]}ms
+                      {tokens[s.c][1]}ms
                     </span>
                   )}
                   <span className="mt-0.5 block text-[11.5px] leading-snug text-black/50">{s.n}</span>

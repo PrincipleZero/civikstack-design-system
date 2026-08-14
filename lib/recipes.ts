@@ -1,4 +1,9 @@
 /**
+ * SEED DATA ONLY. This file populates Payload on first boot of an empty
+ * database and is never read again — editing it changes nothing live.
+ * Edit the catalogue at /admin.
+ */
+/**
  * Motion Cookbook data — cascade recipes.
  *
  * Copied from ~/UI Trace an replication/motion-cookbook rather than rewritten.

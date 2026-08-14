@@ -1,10 +1,13 @@
-import { CURVES } from "@/lib/curves";
+import { getCurves } from "@/lib/cms";
+
+export const dynamic = "force-dynamic";
 import { CurveCard } from "@/components/curves";
 import { PageTitle, Eyebrow } from "@/components/ui";
 
 const TIERS = ["measured", "tolerance", "composite", "refused", "designed"] as const;
 
-export default function CurvesPage() {
+export default async function CurvesPage() {
+  const CURVES = await getCurves();
   const groups = [...new Set(CURVES.map((c) => c.g))];
   const counts = TIERS.map((t) => [t, CURVES.filter((c) => c.cf === t).length] as const)
     .filter(([, n]) => n > 0);

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ENTRIES, bySlug } from "@/lib/registry";
+import { getEntry } from "@/lib/cms";
 import { readSource, SITE_ROOT } from "@/lib/source";
 import { PageTitle, Eyebrow, UsageBadge, RuleNote } from "@/components/ui";
 import Copyable from "@/components/Copyable";
@@ -9,17 +9,13 @@ import { Frame, previewFor } from "@/components/previews";
 
 export const dynamic = "force-dynamic"; // source is read from disk on each request
 
-export function generateStaticParams() {
-  return ENTRIES.map((e) => ({ category: e.category, slug: e.slug }));
-}
-
 export default async function EntryPage({
   params,
 }: {
   params: Promise<{ category: string; slug: string }>;
 }) {
   const { slug } = await params;
-  const e = bySlug(slug);
+  const e = await getEntry(slug);
   if (!e) notFound();
 
   const src = e.sourceFile ? await readSource(e.sourceFile) : null;

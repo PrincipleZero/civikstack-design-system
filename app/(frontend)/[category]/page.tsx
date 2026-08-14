@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CATEGORIES, inCategory, groupsIn, type Category } from "@/lib/registry";
+import { CATEGORIES, type Category } from "@/lib/categories";
+import { getEntries } from "@/lib/cms";
 import { readSource } from "@/lib/source";
 import { PageTitle, Eyebrow, UsageBadge, ProvenanceBadge } from "@/components/ui";
 import { Frame, previewFor } from "@/components/previews";
@@ -14,7 +15,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
   const cat = CATEGORIES.find((c) => c.id === category);
   if (!cat) notFound();
 
-  const entries = inCategory(cat.id as Category);
+  const entries = await getEntries(cat.id as Category);
+  const groups = [...new Set(entries.map((e) => e.group))];
 
   // Read every source file for this category up front so each card can offer
   // a code view without a round trip.
@@ -31,7 +33,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
     <>
       <PageTitle kicker={`${entries.length} entries`} title={cat.name} lede={cat.blurb} />
 
-      {groupsIn(cat.id as Category).map((g) => (
+      {groups.map((g) => (
         <section key={g} className="mb-12">
           <Eyebrow>{g}</Eyebrow>
           <div className="mt-4 grid gap-5 md:grid-cols-2">

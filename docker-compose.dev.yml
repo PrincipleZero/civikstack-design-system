@@ -7,6 +7,8 @@ services:
       - NODE_ENV=development
       - SITE_ROOT=/site
       - WATCHPACK_POLLING=true
+      - DATABASE_URI=file:/data/wayfinder.db
+      - PAYLOAD_SECRET=wayfinder-local-dev-secret-0813
     volumes:
       # This project — hot reload.
       - .:/app
@@ -16,7 +18,10 @@ services:
       # Container-owned so the host is never touched.
       - ds_node_modules:/app/node_modules
       - ds_next:/app/.next
+      # Catalogue content — survives container rebuilds, like the site's volume.
+      - ds_db:/data
 
 volumes:
   ds_node_modules:
   ds_next:
+  ds_db:

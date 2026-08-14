@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { CATEGORIES, ENTRIES, inCategory } from "@/lib/registry";
-import { CURVES } from "@/lib/curves";
-import { RECIPES } from "@/lib/recipes";
+import { CATEGORIES } from "@/lib/categories";
+import { getEntries, getCurves, getRecipes } from "@/lib/cms";
+
+export const dynamic = "force-dynamic"; // catalogue lives in Payload now
 
 const pill =
   "rounded-full px-5 py-3 text-[14px] font-medium transition-transform hover:scale-[1.04]";
@@ -11,9 +12,10 @@ const pill =
  * black hero, then light 1fr/2fr label-and-statement sections. If this page
  * stops looking like civikstack.org, the system has drifted.
  */
-export default function Home() {
-  const patterns = ENTRIES.filter((e) => e.usage).sort((a, b) => b.usage! - a.usage!).slice(0, 5);
-  const measured = CURVES.filter((c) => c.cf === "measured").length;
+export default async function Home() {
+  const [entries, curves, recipes] = await Promise.all([getEntries(), getCurves(), getRecipes()]);
+  const patterns = entries.filter((e) => e.usage).sort((a, b) => b.usage! - a.usage!).slice(0, 5);
+  const measured = curves.filter((c) => c.cf === "measured").length;
 
   return (
     <>
@@ -48,7 +50,7 @@ export default function Home() {
               Start with sections
             </Link>
             <Link href="/curves" className={`${pill} bg-white/10 text-white ring-1 ring-white/25`}>
-              {CURVES.length} easing curves
+              {curves.length} easing curves
             </Link>
           </div>
         </div>
@@ -105,10 +107,10 @@ export default function Home() {
           <div>
             <div className="grid gap-3 sm:grid-cols-2">
               {[
-                { href: "/curves", name: "Curves", n: `${CURVES.length} · ${measured} measured`, b: "Each assigned the one component it best drives." },
-                { href: "/recipes", name: "Recipes", n: `${RECIPES.length} cascades`, b: "Multi-element choreography with ranked onsets." },
+                { href: "/curves", name: "Curves", n: `${curves.length} · ${measured} measured`, b: "Each assigned the one component it best drives." },
+                { href: "/recipes", name: "Recipes", n: `${recipes.length} cascades`, b: "Multi-element choreography with ranked onsets." },
                 ...CATEGORIES.map((c) => ({
-                  href: `/${c.id}`, name: c.name, n: `${inCategory(c.id).length} entries`, b: c.blurb,
+                  href: `/${c.id}`, name: c.name, n: `${entries.filter((e) => e.category === c.id).length} entries`, b: c.blurb,
                 })),
               ].map((c) => (
                 <Link key={c.href} href={c.href}
