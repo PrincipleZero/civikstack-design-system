@@ -7,6 +7,7 @@ import {
   ButtonsDemo, StatusDemo, DropdownDemo, FieldsDemo,
   AlertsDemo, AvatarsDemo, TableDemo, LabelsDemo,
 } from "./elements";
+import { TileLoop, RowLoop, BarLoop } from "./loops";
 
 /**
  * Built here rather than exported from motion.tsx: a "use client" module can
@@ -25,6 +26,9 @@ const ELEMENT_DEMOS: Record<string, React.ReactNode> = {
 };
 
 const MOTION_DEMOS: Record<string, React.ReactNode> = {
+  "m-loop-tile": <TileLoop />,
+  "m-loop-row": <RowLoop />,
+  "m-loop-bar": <BarLoop />,
   "m-easing": <EasingDemo />,
   "m-reveal": <RevealDemo />,
   "m-hover-lift": <HoverLiftDemo />,

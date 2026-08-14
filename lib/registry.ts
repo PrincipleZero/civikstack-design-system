@@ -28,7 +28,7 @@ export type Entry = {
    * "new"       = designed here in the house style; the site does not use it yet.
    * Keeping these apart is what stops the catalogue from quietly inventing history.
    */
-  provenance?: "extracted" | "new";
+  provenance?: "extracted" | "new" | "external";
 };
 
 export const CATEGORIES: { id: Category; name: string; blurb: string }[] = [
@@ -272,6 +272,28 @@ export const ENTRIES: Entry[] = [
     usage: 10, provenance: "extracted",
     classes: "font-mono text-[11px] uppercase tracking-[0.14em] text-black/45",
     rule: "Mono is for labels and metadata only. The moment it carries a sentence, it stops being a label.",
+  },
+
+  {
+    slug: "m-loop-tile", name: "Tile travel & pop", category: "motion", group: "Loops — measured from motion.dev",
+    blurb: "Hold, travel with a 15° rotate, then a scale pop to 1.75 at 54% before returning. The holds are what make it read as a beat, not a drift.",
+    provenance: "external",
+    classes: "animation: ds-diag-tile 3.6s cubic-bezier(0.6,0,0.2,1) infinite",
+    rule: "Measured from motion.dev's hero diagram, not from civikstack.org — external vocabulary until the site adopts it. Keep the 0–12% and 34–44% holds; without them the loop feels like wandering.",
+  },
+  {
+    slug: "m-loop-row", name: "Row cycle", category: "motion", group: "Loops — measured from motion.dev",
+    blurb: "Rows slide −12% and fade out, stay gone through 55–70%, then return. Staggered 450ms apart.",
+    provenance: "external",
+    classes: "animation: ds-diag-row 3s cubic-bezier(0.4,0,0.2,1) var(--d) infinite  /* --d: 0 / 450ms / 900ms */",
+    rule: "The 55–70% hold is the craft: a row that returns the instant it leaves reads as flicker. External vocabulary — measured, not yet used on the site.",
+  },
+  {
+    slug: "m-loop-bar", name: "Bar fill", category: "motion", group: "Loops — measured from motion.dev",
+    blurb: "scaleX fills 0→1 by 45%, holds, drains by 90%. Staggered 120ms — tight enough to read as one system working.",
+    provenance: "external",
+    classes: "animation: ds-diag-bar 2.4s cubic-bezier(0.4,0,0.4,1) var(--d) infinite  /* --d: 0/120/240/360ms */",
+    rule: "origin-left is required — without transform-origin the bar grows from its centre and the fill metaphor dies. External vocabulary — measured, not yet used on the site.",
   },
 ];
 

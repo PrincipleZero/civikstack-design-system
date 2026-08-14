@@ -8,7 +8,6 @@ import { CATEGORIES } from "@/lib/registry";
 const EXTRA = [
   { id: "curves", name: "Curves" },
   { id: "recipes", name: "Recipes" },
-  { id: "replication", name: "Replication" },
 ];
 
 /**

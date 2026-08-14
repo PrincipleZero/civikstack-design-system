@@ -35,7 +35,13 @@ export function RuleNote({ children }: { children: React.ReactNode }) {
 }
 
 /** extracted = already on the site · new = designed here, not shipping yet. */
-export function ProvenanceBadge({ p }: { p: "extracted" | "new" }) {
+export function ProvenanceBadge({ p }: { p: "extracted" | "new" | "external" }) {
+  if (p === "external")
+    return (
+      <span className="rounded-full bg-sky-50 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.08em] text-sky-900 ring-1 ring-sky-200">
+        measured elsewhere
+      </span>
+    );
   const isNew = p === "new";
   return (
     <span
