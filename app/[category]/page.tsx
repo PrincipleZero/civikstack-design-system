@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CATEGORIES, inCategory, groupsIn, type Category } from "@/lib/registry";
 import { readSource } from "@/lib/source";
-import { PageTitle, Eyebrow, UsageBadge } from "@/components/ui";
+import { PageTitle, Eyebrow, UsageBadge, ProvenanceBadge } from "@/components/ui";
 import { Frame, previewFor } from "@/components/previews";
 import ViewToggle from "@/components/ViewToggle";
 import Copyable from "@/components/Copyable";
@@ -43,7 +43,10 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
                     <Link href={`/${e.category}/${e.slug}`} className="group">
                       <p className="text-[16px] font-medium group-hover:underline">{e.name}</p>
                     </Link>
-                    {e.usage ? <UsageBadge n={e.usage} /> : null}
+                    <span className="flex shrink-0 flex-wrap justify-end gap-1.5">
+                      {e.provenance ? <ProvenanceBadge p={e.provenance} /> : null}
+                      {e.usage ? <UsageBadge n={e.usage} /> : null}
+                    </span>
                   </div>
                   <p className="mt-1.5 text-[13.5px] leading-snug text-black/55">{e.blurb}</p>
 

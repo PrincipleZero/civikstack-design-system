@@ -20,6 +20,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </span>
             </Link>
             <nav className="flex flex-wrap gap-x-5 gap-y-1">
+              {[{ id: "curves", name: "Curves" }, { id: "recipes", name: "Recipes" }].map((c) => (
+                <Link key={c.id} href={`/${c.id}`}
+                  className="text-[14px] text-black/60 transition hover:text-black">
+                  {c.name}
+                </Link>
+              ))}
               {CATEGORIES.map((c) => (
                 <Link key={c.id} href={`/${c.id}`}
                   className="text-[14px] text-black/60 transition hover:text-black">

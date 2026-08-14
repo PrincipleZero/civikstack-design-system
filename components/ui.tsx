@@ -33,3 +33,19 @@ export function RuleNote({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+
+/** extracted = already on the site · new = designed here, not shipping yet. */
+export function ProvenanceBadge({ p }: { p: "extracted" | "new" }) {
+  const isNew = p === "new";
+  return (
+    <span
+      className={`rounded-full px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.08em] ring-1 ${
+        isNew
+          ? "border border-dashed border-amber-400 bg-amber-50 text-amber-900 ring-amber-200"
+          : "bg-emerald-50 text-emerald-900 ring-emerald-200"
+      }`}
+    >
+      {isNew ? "new — not on the site" : "on the site"}
+    </span>
+  );
+}

@@ -24,3 +24,9 @@ body {
   -webkit-font-smoothing: antialiased;
   background: #fff; color: #000;
 }
+
+/* Drives the curve specimens: one move, so the easing is the only variable. */
+@keyframes ds-run {
+  from { left: 0%; }
+  to   { left: calc(100% - 12px); }
+}

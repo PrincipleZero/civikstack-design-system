@@ -7,7 +7,7 @@
  * pattern is load-bearing rather than a one-off.
  */
 
-export type Category = "foundations" | "motion" | "primitives" | "sections" | "templates";
+export type Category = "foundations" | "elements" | "motion" | "primitives" | "sections" | "templates";
 
 export type Entry = {
   slug: string;
@@ -23,10 +23,17 @@ export type Entry = {
   sourceFile?: string;
   /** Rule or gotcha a builder must respect. */
   rule?: string;
+  /**
+   * "extracted" = measured from civikstack.org and already shipping.
+   * "new"       = designed here in the house style; the site does not use it yet.
+   * Keeping these apart is what stops the catalogue from quietly inventing history.
+   */
+  provenance?: "extracted" | "new";
 };
 
 export const CATEGORIES: { id: Category; name: string; blurb: string }[] = [
   { id: "foundations", name: "Foundations", blurb: "Type, colour, rhythm, motion — the decisions everything inherits." },
+  { id: "elements", name: "Elements", blurb: "Buttons, chips, alerts, avatars, tables and dropdowns — the small parts." },
   { id: "motion", name: "Motion", blurb: "The animation vocabulary — durations, easings and gestures, measured from the real source." },
   { id: "primitives", name: "Primitives", blurb: "The reusable components that ship on the site today." },
   { id: "sections", name: "Sections", blurb: "Layout blocks that repeat across pages. The structural vocabulary." },
@@ -211,6 +218,60 @@ export const ENTRIES: Entry[] = [
     slug: "m-stagger", name: "Stagger", category: "motion", group: "Entrance",
     blurb: "0.06s between siblings — enough to read as a sequence, short enough not to feel like lag.",
     rule: "Cap it. Past about six items the last one arrives late enough to feel broken.",
+  },
+
+  // ---------- ELEMENTS ----------
+  {
+    slug: "e-buttons", name: "Buttons", category: "elements", group: "Actions",
+    blurb: "One pill shape, four fills. Primary black, secondary tinted, and two on-dark variants.",
+    usage: 34, provenance: "extracted",
+    classes: "rounded-full bg-black px-5 py-3 text-[14px] font-medium text-white transition-transform hover:scale-[1.04]",
+    rule: "Always the full pill — no square buttons anywhere on the site. Secondary is bg-black/5, never a border.",
+  },
+  {
+    slug: "e-status", name: "Status chips", category: "elements", group: "Feedback",
+    blurb: "In development · Private beta · In production. Set in lib/cms.ts, not editable in the CMS.",
+    usage: 6, provenance: "extracted",
+    rule: "toolStatus() is hardcoded. IN_PRODUCTION is currently empty — everything reads as in-development until that changes in code.",
+  },
+  {
+    slug: "e-dropdown", name: "Dropdown", category: "elements", group: "Navigation",
+    blurb: "The nav submenu: invisible + opacity-0 until hover or focus, 200ms.",
+    provenance: "extracted", sourceFile: "components/Nav.tsx",
+    classes: "invisible absolute left-0 top-full z-50 pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100",
+    rule: "group-focus-within is not optional — without it the menu cannot be opened by keyboard. The pt-3 keeps a hover bridge so the panel does not close as the pointer travels to it.",
+  },
+  {
+    slug: "e-fields", name: "Form fields", category: "elements", group: "Forms",
+    blurb: "Inputs, selects and textareas. Tinted fill, hairline ring, ring darkens on focus.",
+    provenance: "extracted", sourceFile: "components/ContactForm.tsx",
+    classes: "rounded-lg bg-black/[0.04] px-4 py-3.5 text-[14px] text-black placeholder-black/40 ring-1 ring-black/10 outline-none transition focus:ring-black/40",
+    rule: "Use 16px on phone-facing forms — anything smaller makes iOS zoom on focus.",
+  },
+  {
+    slug: "e-alerts", name: "Alerts", category: "elements", group: "Feedback",
+    blurb: "Notice, warning, error and success. Tinted fill with a matching ring — no icons, no borders.",
+    provenance: "new",
+    rule: "Not on the site yet. Error styling matches the pattern already used for the contact-form failure state, so adopting it introduces nothing new visually.",
+  },
+  {
+    slug: "e-avatars", name: "Avatars", category: "elements", group: "People",
+    blurb: "Circular, with initials as the fallback. Three sizes and a stacked group.",
+    provenance: "new",
+    rule: "Not on the site yet — there are no people photographs anywhere in it today. Initials must be the default, since the Lab and governance pages will name people long before there are portraits.",
+  },
+  {
+    slug: "e-table", name: "Table", category: "elements", group: "Data",
+    blurb: "Mono uppercase column labels, hairline row rules, numerals right-aligned and tabular.",
+    provenance: "new",
+    rule: "Not on the site yet, but the Labs tool already needs it. Numbers use tabular-nums so columns do not jitter as counts change.",
+  },
+  {
+    slug: "e-labels", name: "Labels & badges", category: "elements", group: "Data",
+    blurb: "The mono eyebrow, the count badge, and the inline tag.",
+    usage: 10, provenance: "extracted",
+    classes: "font-mono text-[11px] uppercase tracking-[0.14em] text-black/45",
+    rule: "Mono is for labels and metadata only. The moment it carries a sentence, it stops being a label.",
   },
 ];
 
