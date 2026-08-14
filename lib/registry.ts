@@ -7,7 +7,7 @@
  * pattern is load-bearing rather than a one-off.
  */
 
-export type Category = "foundations" | "primitives" | "sections" | "templates";
+export type Category = "foundations" | "motion" | "primitives" | "sections" | "templates";
 
 export type Entry = {
   slug: string;
@@ -27,6 +27,7 @@ export type Entry = {
 
 export const CATEGORIES: { id: Category; name: string; blurb: string }[] = [
   { id: "foundations", name: "Foundations", blurb: "Type, colour, rhythm, motion — the decisions everything inherits." },
+  { id: "motion", name: "Motion", blurb: "The animation vocabulary — durations, easings and gestures, measured from the real source." },
   { id: "primitives", name: "Primitives", blurb: "The reusable components that ship on the site today." },
   { id: "sections", name: "Sections", blurb: "Layout blocks that repeat across pages. The structural vocabulary." },
   { id: "templates", name: "Page templates", blurb: "How whole pages are assembled from sections." },
@@ -163,6 +164,53 @@ export const ENTRIES: Entry[] = [
     slug: "t-peer", name: "Peer page", category: "templates", group: "By audience",
     blurb: "Standards, Tools, Developments.",
     rule: "Precision first — defined terms stay intact. Pair each coined term with a plain gloss so an outsider can still follow.",
+  },
+  // ---------- MOTION ----------
+  {
+    slug: "m-easing", name: "The signature curve", category: "motion", group: "Tokens",
+    blurb: "cubic-bezier(0.22, 1, 0.36, 1) — fast out, long settle. This is what makes the site feel calm rather than springy.",
+    classes: "ease: [0.22, 1, 0.36, 1]",
+    rule: "Use this for anything entering the page. Reserve ease-out (Tailwind's default curve) for hover states only.",
+  },
+  {
+    slug: "m-reveal", name: "Reveal — fade up", category: "motion", group: "Entrance",
+    blurb: "The one scroll primitive. Opacity 0→1 and y 24→0 over 0.7s, once, 80px before the element enters view.",
+    usage: 1, sourceFile: "components/Reveal.tsx",
+    rule: "Reveal.tsx is the only scroll-reveal on the site — do not fork it. It honours prefers-reduced-motion by skipping the initial offset entirely.",
+  },
+  {
+    slug: "m-hover-lift", name: "Hover lift", category: "motion", group: "Interaction",
+    blurb: "scale(1.04) on hover. The site's single interactive gesture.",
+    usage: 24, classes: "transition-transform hover:scale-[1.04]",
+    rule: "1.04 everywhere. One card uses 1.03 — that is drift, not a variant.",
+  },
+  {
+    slug: "m-image-zoom", name: "Image zoom", category: "motion", group: "Interaction",
+    blurb: "The image scales inside a fixed frame on card hover. Slow — 700ms — so it reads as depth, not as a jump.",
+    usage: 6, classes: "overflow-hidden · group-hover:scale-[1.04] transition-transform duration-700 ease-out",
+    rule: "The frame must carry overflow-hidden or the image escapes its corners.",
+  },
+  {
+    slug: "m-color-shift", name: "Colour shift", category: "motion", group: "Interaction",
+    blurb: "Pills and links invert on hover rather than dimming.",
+    usage: 34, classes: "transition-colors hover:bg-black hover:text-white",
+  },
+  {
+    slug: "m-chevron", name: "Chevron rotate", category: "motion", group: "Interaction",
+    blurb: "Dropdown indicator turns 180° in 200ms.",
+    usage: 1, classes: "transition-transform duration-200 group-hover:rotate-180 group-focus-within:rotate-180",
+    rule: "Pair every hover trigger with focus-within, or the menu is unreachable by keyboard.",
+  },
+  {
+    slug: "m-menu-overlay", name: "Menu overlay", category: "motion", group: "Entrance",
+    blurb: "Mobile menu: backdrop fades over 0.35s, then items rise from y 30.",
+    sourceFile: "components/Nav.tsx",
+    rule: "Wrapped in AnimatePresence so the exit animation actually runs — without it the menu vanishes instantly on close.",
+  },
+  {
+    slug: "m-stagger", name: "Stagger", category: "motion", group: "Entrance",
+    blurb: "0.06s between siblings — enough to read as a sequence, short enough not to feel like lag.",
+    rule: "Cap it. Past about six items the last one arrives late enough to feel broken.",
   },
 ];
 

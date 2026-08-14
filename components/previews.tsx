@@ -1,4 +1,24 @@
 import SectionPreview from "./SectionPreview";
+import {
+  EasingDemo, RevealDemo, HoverLiftDemo, ImageZoomDemo,
+  ColorShiftDemo, MenuOverlayDemo, ChevronDemo, StaggerDemo,
+} from "./motion";
+
+/**
+ * Built here rather than exported from motion.tsx: a "use client" module can
+ * export components across the boundary, but not a map of already-created
+ * elements — those arrive undefined on the server.
+ */
+const MOTION_DEMOS: Record<string, React.ReactNode> = {
+  "m-easing": <EasingDemo />,
+  "m-reveal": <RevealDemo />,
+  "m-hover-lift": <HoverLiftDemo />,
+  "m-image-zoom": <ImageZoomDemo />,
+  "m-color-shift": <ColorShiftDemo />,
+  "m-menu-overlay": <MenuOverlayDemo />,
+  "m-chevron": <ChevronDemo />,
+  "m-stagger": <StaggerDemo />,
+};
 
 /**
  * An artboard. Previews sit inside it so they read as a specimen of the site
@@ -248,6 +268,7 @@ export const PREVIEWS: Record<string, React.ReactNode> = {
 
 /** Sections render from their real class string. */
 export function previewFor(slug: string, classes?: string): React.ReactNode {
+  if (MOTION_DEMOS[slug]) return MOTION_DEMOS[slug];
   if (PREVIEWS[slug]) return PREVIEWS[slug];
   if (classes) return <SectionPreview classes={classes} slug={slug} />;
   return (
