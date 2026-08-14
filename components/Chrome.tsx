@@ -174,9 +174,7 @@ export function Nav() {
 export function Main({ children }: { children: React.ReactNode }) {
   const path = usePathname();
   if (path === "/") return <main>{children}</main>;
-  return (
-    <main className="light-page min-h-screen bg-white text-black">
-      <div className="mx-auto max-w-[1500px] px-6 pb-28 pt-8 md:px-10">{children}</div>
-    </main>
-  );
+  // Full-bleed: each page opens with its hero band; body content wraps itself
+  // in <Gutter>.
+  return <main className="light-page min-h-screen bg-white text-black">{children}</main>;
 }

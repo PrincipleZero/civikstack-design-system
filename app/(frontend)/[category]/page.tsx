@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { CATEGORIES, type Category } from "@/lib/categories";
 import { getEntries } from "@/lib/cms";
 import { readSource } from "@/lib/source";
-import { PageTitle, Eyebrow, UsageBadge, ProvenanceBadge } from "@/components/ui";
+import { PageTitle, Gutter, Eyebrow, UsageBadge, ProvenanceBadge } from "@/components/ui";
 import { Frame, previewFor } from "@/components/previews";
 import ViewToggle from "@/components/ViewToggle";
 import Copyable from "@/components/Copyable";
@@ -33,6 +33,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
     <>
       <PageTitle kicker={`${entries.length} entries`} title={cat.name} lede={cat.blurb} />
 
+      <Gutter>
       {groups.map((g) => (
         <section key={g} className="mb-12">
           <Eyebrow>{g}</Eyebrow>
@@ -78,6 +79,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
           </div>
         </section>
       ))}
+      </Gutter>
     </>
   );
 }

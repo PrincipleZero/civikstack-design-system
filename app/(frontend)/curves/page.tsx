@@ -2,7 +2,7 @@ import { getCurves } from "@/lib/cms";
 
 export const dynamic = "force-dynamic";
 import { CurveCard } from "@/components/curves";
-import { PageTitle, Eyebrow } from "@/components/ui";
+import { PageTitle, Gutter, Eyebrow } from "@/components/ui";
 
 const TIERS = ["measured", "tolerance", "composite", "refused", "designed"] as const;
 
@@ -20,6 +20,7 @@ export default async function CurvesPage() {
         lede="Each curve is assigned the one component it is best suited to drive. Measured curves carry their fit error; designed curves are marked and state what was derived versus invented. That distinction is the point — it survives copy-paste."
       />
 
+      <Gutter>
       <div className="mb-10 flex flex-wrap gap-2">
         {counts.map(([t, n]) => (
           <span key={t} className="rounded-full bg-black/[0.05] px-3 py-1.5 font-mono text-[11.5px] text-black/60 ring-1 ring-black/10">
@@ -38,6 +39,7 @@ export default async function CurvesPage() {
           </div>
         </section>
       ))}
+      </Gutter>
     </>
   );
 }

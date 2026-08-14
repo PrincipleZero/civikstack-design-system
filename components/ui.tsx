@@ -4,16 +4,28 @@ export function Eyebrow({ children }: { children: React.ReactNode }) {
   );
 }
 
+/**
+ * Every catalogue page opens with a hero: a full-bleed black title band in the
+ * home hero's language — mono kicker, display-size title, muted lede. Content
+ * below sits in <Gutter>.
+ */
 export function PageTitle({ kicker, title, lede }: { kicker: string; title: string; lede?: string }) {
   return (
-    <div className="mb-10 border-b border-black/10 pb-8">
-      <Eyebrow>{kicker}</Eyebrow>
-      <h1 className="mt-2 text-[36px] font-medium leading-[1.08] tracking-[-0.02em] md:text-[44px]">
-        {title}
-      </h1>
-      {lede && <p className="mt-3 max-w-3xl text-[15px] leading-relaxed text-black/60">{lede}</p>}
+    <div className="bg-black px-6 pb-14 pt-12 text-white md:px-10 md:pb-20 md:pt-16">
+      <div className="mx-auto max-w-[1500px]">
+        <p className="font-mono text-[12px] uppercase tracking-[0.14em] text-white/45">{kicker}</p>
+        <h1 className="mt-3 max-w-4xl text-[44px] font-medium leading-[1.02] tracking-[-0.02em] md:text-[64px]">
+          {title}
+        </h1>
+        {lede && <p className="mt-4 max-w-3xl text-[15px] leading-relaxed text-white/65 md:text-[16px]">{lede}</p>}
+      </div>
     </div>
   );
+}
+
+/** The standard content gutter for everything under a hero. */
+export function Gutter({ children }: { children: React.ReactNode }) {
+  return <div className="mx-auto max-w-[1500px] px-6 pb-28 pt-10 md:px-10">{children}</div>;
 }
 
 /** How many times a pattern appears on the real site — the evidence it is load-bearing. */

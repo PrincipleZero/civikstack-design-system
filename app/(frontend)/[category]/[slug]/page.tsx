@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getEntry } from "@/lib/cms";
 import { readSource, SITE_ROOT } from "@/lib/source";
-import { PageTitle, Eyebrow, UsageBadge, RuleNote } from "@/components/ui";
+import { Gutter, Eyebrow, UsageBadge, ProvenanceBadge, RuleNote } from "@/components/ui";
 import Copyable from "@/components/Copyable";
 import ViewToggle from "@/components/ViewToggle";
 import { Frame, previewFor } from "@/components/previews";
@@ -22,15 +22,25 @@ export default async function EntryPage({
 
   return (
     <>
-      <Link href={`/${e.category}`} className="font-mono text-[12px] text-black/45 hover:text-black">
-        ← {e.category}
-      </Link>
+      {/* hero band — every page opens with its title */}
+      <div className="bg-black px-6 pb-14 pt-10 text-white md:px-10 md:pb-20 md:pt-12">
+        <div className="mx-auto max-w-[1500px]">
+          <Link href={`/${e.category}`}
+            className="font-mono text-[12px] uppercase tracking-[0.14em] text-white/45 transition-colors hover:text-white">
+            ← {e.category}
+          </Link>
+          <h1 className="mt-4 max-w-4xl text-[44px] font-medium leading-[1.02] tracking-[-0.02em] md:text-[64px]">
+            {e.name}
+          </h1>
+          <p className="mt-4 max-w-3xl text-[15px] leading-relaxed text-white/65 md:text-[16px]">{e.blurb}</p>
+        </div>
+      </div>
 
-      <div className="mt-3 flex flex-wrap items-center gap-3">
-        <h1 className="text-[34px] font-medium leading-tight tracking-[-0.02em]">{e.name}</h1>
+      <Gutter>
+      <div className="flex flex-wrap items-center gap-1.5">
+        {e.provenance ? <ProvenanceBadge p={e.provenance} /> : null}
         {e.usage ? <UsageBadge n={e.usage} /> : null}
       </div>
-      <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-black/60">{e.blurb}</p>
       {e.rule && <RuleNote>{e.rule}</RuleNote>}
 
       <section className="mt-10">
@@ -97,6 +107,7 @@ export default async function EntryPage({
       {e.category === "foundations" && slug === "typography" && <TypeScale />}
       {e.category === "foundations" && slug === "colour" && <Palette />}
       {e.category === "foundations" && slug === "rhythm" && <Rhythm />}
+      </Gutter>
     </>
   );
 }

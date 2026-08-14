@@ -2,7 +2,7 @@ import { getRecipes, getTokens } from "@/lib/cms";
 
 export const dynamic = "force-dynamic";
 import RecipeCard from "@/components/RecipeCard";
-import { PageTitle, Eyebrow } from "@/components/ui";
+import { PageTitle, Gutter, Eyebrow } from "@/components/ui";
 
 export default async function RecipesPage() {
   const [RECIPES, E] = await Promise.all([getRecipes(), getTokens()]);
@@ -17,6 +17,7 @@ export default async function RecipesPage() {
         lede="Compound widgets: several elements moving on different curves at ranked onsets. The grammar is strict — structure first, then content, and the accent arrives last, with at most one marked device per view."
       />
 
+      <Gutter>
       <div className="mb-10 rounded-xl bg-amber-50 px-4 py-3 text-[13px] leading-snug text-amber-950 ring-1 ring-amber-200">
         <span className="font-medium">What travels, and what does not. </span>
         The specification below — elements, curves, onsets, roles and rationale — is copied verbatim
@@ -61,6 +62,7 @@ export default async function RecipesPage() {
           </div>
         </section>
       ))}
+      </Gutter>
     </>
   );
 }
