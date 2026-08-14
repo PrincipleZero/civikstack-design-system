@@ -1,4 +1,5 @@
 import Link from "next/link";
+import HeroVideo from "@/components/HeroVideo";
 import { CATEGORIES } from "@/lib/categories";
 import { getEntries, getCurves, getRecipes } from "@/lib/cms";
 
@@ -21,18 +22,10 @@ export default async function Home() {
     <>
       {/* ---------- hero ---------- */}
       <section className="relative flex min-h-[86vh] w-full flex-col justify-center overflow-hidden bg-black">
-        <div
-          aria-hidden
-          className="absolute inset-0 opacity-[0.13]"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, rgba(255,255,255,.5) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,.5) 1px, transparent 1px)",
-            backgroundSize: "72px 72px",
-            maskImage: "radial-gradient(110% 95% at 50% 55%, black 25%, transparent 78%)",
-            WebkitMaskImage: "radial-gradient(110% 95% at 50% 55%, black 25%, transparent 78%)",
-          }}
-        />
-        <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40" />
+        {/* Pexels 18069803, cropped to the displayed 16:9 slice and compressed
+            31MB → 4.7MB. Poster paints instantly while the video buffers. */}
+        <HeroVideo />
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/55" />
 
         <div className="relative z-10 flex flex-col items-center px-6 py-24 text-center md:px-10">
           {/* eslint-disable-next-line @next/next/no-img-element */}
