@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Curve } from "@/lib/curves";
+import { CurveUIDemo, EXAMPLES } from "./curve-demos";
 
 /** Provenance tiers, straight from the cookbook. */
 const TIER: Record<string, { label: string; cls: string }> = {
@@ -63,31 +64,32 @@ export function CurveCard({ c }: { c: Curve }) {
           <Plot easing={c.e} />
         </div>
 
-        {/* the curve driving a real move */}
+        {/* the curve driving the component it is best suited to */}
         <div>
-          <div className="relative h-1.5 rounded-full bg-black/10">
-            <span
-              key={k}
-              className="absolute top-1/2 size-3 -translate-y-1/2 rounded-full bg-black"
-              style={{
-                animation: `ds-run ${dur}ms ${c.e === "step" ? "steps(1,end)" : c.e} forwards`,
-              }}
-            />
+          <div key={k}>
+            <CurveUIDemo demo={c.demo} easing={c.e} duration={dur} />
           </div>
           <div className="mt-2.5 flex items-center justify-between gap-2">
-            <span className="font-mono text-[11px] text-black/45">{dur}ms</span>
+            <span className="font-mono text-[11px] text-black/45">{dur}ms · looping</span>
             <button
               type="button"
               onClick={() => setK((n) => n + 1)}
               className="rounded-full bg-black/[0.06] px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.08em] text-black/55 ring-1 ring-black/10 hover:bg-black/10"
             >
-              Replay
+              Restart
             </button>
           </div>
         </div>
       </div>
 
       <p className="mt-4 text-[13px] font-medium text-black/80">Best for: {c.ideal}</p>
+      <div className="mt-2 flex flex-wrap gap-1.5">
+        {(EXAMPLES[c.demo] ?? []).map((x) => (
+          <span key={x} className="rounded-full bg-black/[0.05] px-2.5 py-1 text-[11px] text-black/55 ring-1 ring-black/10">
+            {x}
+          </span>
+        ))}
+      </div>
       <p className="mt-1.5 text-[12.5px] leading-relaxed text-black/55"
          dangerouslySetInnerHTML={{ __html: c.why }} />
       {c.des && (
