@@ -58,13 +58,12 @@ export function Nav() {
       >
         <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-6 px-6 py-4 md:px-10">
           <Link href="/" className="shrink-0">
-            <span
-              className={`rounded-md px-2 py-1 font-mono text-[12px] font-semibold uppercase tracking-[0.1em] ${
-                onDark ? "bg-white text-black" : "bg-black text-white"
-              }`}
-            >
-              Wayfinder
-            </span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={onDark ? "/wayfinder-logo-white.png" : "/wayfinder-logo.png"}
+              alt="Wayfinder"
+              className="h-7 w-auto"
+            />
           </Link>
 
           {/* The main categories live in the bar; Curves, Recipes and Admin
@@ -119,9 +118,8 @@ export function Nav() {
               className="fixed inset-y-0 right-0 z-50 flex w-full max-w-[460px] flex-col bg-black text-white"
             >
               <div className="flex items-center justify-between px-8 py-5">
-                <span className="rounded-md bg-white px-2 py-1 font-mono text-[12px] font-semibold uppercase tracking-[0.1em] text-black">
-                  Wayfinder
-                </span>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/wayfinder-logo-white.png" alt="Wayfinder" className="h-7 w-auto" />
                 <button
                   type="button"
                   onClick={() => setOpen(false)}

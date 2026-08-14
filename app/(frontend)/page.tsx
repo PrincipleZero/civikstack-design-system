@@ -35,8 +35,10 @@ export default async function Home() {
         <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40" />
 
         <div className="relative z-10 flex flex-col items-center px-6 py-24 text-center md:px-10">
-          <p className="font-mono text-[13px] uppercase tracking-[0.14em] text-white/45">
-            Wayfinder · built from civikstack.org
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/wayfinder-logo-white.png" alt="Wayfinder" className="mx-auto h-12 w-auto md:h-14" />
+          <p className="mt-5 font-mono text-[13px] uppercase tracking-[0.14em] text-white/45">
+            Built from civikstack.org
           </p>
           <h1 className="mt-4 max-w-4xl text-[34px] font-medium leading-[1.05] tracking-[-0.02em] text-white md:text-[52px]">
             The site already made these decisions. This is where they are written down.
