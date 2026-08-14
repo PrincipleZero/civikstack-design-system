@@ -1,0 +1,21 @@
+# dependencies
+/node_modules
+
+# next
+/.next/
+/out/
+next-env.d.ts
+*.tsbuildinfo
+
+# local databases (they live in Docker volumes; never commit event data)
+*.db
+*.db-shm
+*.db-wal
+*.db.bak*
+
+# env
+.env*
+
+# misc
+.DS_Store
+*.log

@@ -1,0 +1,22 @@
+services:
+  design-system:
+    build: { context: ., dockerfile: Dockerfile.dev }
+    container_name: civikstack-design-system
+    ports: ["3300:3000"]
+    environment:
+      - NODE_ENV=development
+      - SITE_ROOT=/site
+      - WATCHPACK_POLLING=true
+    volumes:
+      # This project — hot reload.
+      - .:/app
+      # The real site, READ-ONLY. The catalogue reads component source from here
+      # and can never modify it.
+      - "/Users/reggie/Civkstack Foundation Website:/site:ro"
+      # Container-owned so the host is never touched.
+      - ds_node_modules:/app/node_modules
+      - ds_next:/app/.next
+
+volumes:
+  ds_node_modules:
+  ds_next:

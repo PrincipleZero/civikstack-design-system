@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-switzer), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@font-face {
+  font-family: "Switzer"; src: url("/fonts/Switzer-400.woff2") format("woff2");
+  font-weight: 400; font-display: swap;
+}
+@font-face {
+  font-family: "Switzer"; src: url("/fonts/Switzer-500.woff2") format("woff2");
+  font-weight: 500; font-display: swap;
+}
+@font-face {
+  font-family: "Switzer"; src: url("/fonts/Switzer-600.woff2") format("woff2");
+  font-weight: 600; font-display: swap;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: "Switzer", ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background: #fff; color: #000;
+}
