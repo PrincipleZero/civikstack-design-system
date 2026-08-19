@@ -8,13 +8,14 @@ services:
       - SITE_ROOT=/site
       - WATCHPACK_POLLING=true
       - DATABASE_URI=file:/data/wayfinder.db
-      - PAYLOAD_SECRET=wayfinder-local-dev-secret-0813
+      # Set in .env (see .env.example). Never commit a real value.
+      - PAYLOAD_SECRET=${PAYLOAD_SECRET:?set PAYLOAD_SECRET in .env}
     volumes:
       # This project — hot reload.
       - .:/app
       # The real site, READ-ONLY. The catalogue reads component source from here
       # and can never modify it.
-      - "/Users/reggie/Civkstack Foundation Website:/site:ro"
+      - "${SITE_PATH:-../civikstack-foundation-site}:/site:ro"
       # Container-owned so the host is never touched.
       - ds_node_modules:/app/node_modules
       - ds_next:/app/.next
